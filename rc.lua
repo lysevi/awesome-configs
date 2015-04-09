@@ -83,15 +83,25 @@ end
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
----tags = {}
---for s = 1, screen.count() do
---    -- Each screen has its own tag table.
---    tags[s] = awful.tag({ "msc", "dev", "net", "snd"}, s, layouts[1])
---end
-names = { "msc", "dev", "net", "snd", 5, 6, 7, 8, 9 },
-    layout={ layouts[3], layouts[10], layouts[10], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1], layouts[1]}
+-- tags = {}
+-- for s = 1, screen.count() do
+--     -- Each screen has its own tag table.
+--     tags[s] = awful.tag({ "msc", "dev", "net", "snd"}, s, layouts[1])
+-- end
+--tags = {
+--    names = { "Main", "www", 3, 4, 5, 6, 7, 8, 9 },
+--    layout={ layouts[2], layouts[10], layouts[10], layouts[10], layouts[1], layouts[2], layouts[1],
+--			layouts[1], layouts[11]
+--           }
+--	}
 -- }}}
-
+tags = {
+    names  = { "α", "β", "ζ", "Θ" },
+    layout = { layouts[10], layouts[10], layouts[10], layouts[10]}
+  }
+  for s = 1, screen.count() do
+      tags[s] = awful.tag(tags.names, s, tags.layout)
+  end
 -- {{{ Menu
 -- Create a laucher widget and a main menu
 myawesomemenu = {
@@ -222,6 +232,7 @@ root.buttons(awful.util.table.join(
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "d", function() awful.util.spawn("/usr/bin/emacs24") end),
     awful.key({ modkey,           }, "p", function() awful.util.spawn("x-terminal-emulator -e ".."mocp") end),
+    awful.key({ modkey,           }, "c", function() awful.util.spawn("x-terminal-emulator") end),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
@@ -373,9 +384,10 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "gimp" },
       properties = { floating = true } },
-    -- Set Firefox to always map on tags number 2 of screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { tag = tags[1][2] } },
+    { rule = { class = "Emacs" },
+       properties = { tag = tags[1][2] } },
+    { rule = { role = "browser" },
+       properties = { tag = tags[1][3] } }
 }
 -- }}}
 
@@ -451,3 +463,4 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
