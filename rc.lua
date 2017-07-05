@@ -230,9 +230,10 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "d", function() awful.util.spawn("/usr/bin/emacs24") end),
-    awful.key({ modkey,           }, "p", function() awful.util.spawn("x-terminal-emulator -e ".."mocp") end),
-    awful.key({ modkey,           }, "c", function() awful.util.spawn("x-terminal-emulator") end),
+    awful.key({ modkey,"Control"  }, "d", function() awful.util.spawn("/usr/bin/emacs24") end),
+    awful.key({ modkey,"Control"  }, "m", function() awful.util.spawn("x-terminal-emulator -e ".."mocp") end),
+    awful.key({ modkey,"Control"  }, "h", function() awful.util.spawn("x-terminal-emulator -e ".."htop") end),
+    awful.key({ modkey,"Control"  }, "c", function() awful.util.spawn("x-terminal-emulator") end),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
@@ -386,6 +387,8 @@ awful.rules.rules = {
       properties = { floating = true } },
     { rule = { class = "Emacs" },
        properties = { tag = tags[1][2] } },
+        { rule = { class = "Firefox" },
+       properties = { tag = tags[1][3] } },
     { rule = { role = "browser" },
        properties = { tag = tags[1][3] } }
 }
@@ -414,7 +417,7 @@ client.connect_signal("manage", function (c, startup)
         end
     end
 
-    local titlebars_enabled = false
+    local titlebars_enabled = true
     if titlebars_enabled and (c.type == "normal" or c.type == "dialog") then
         -- buttons for the titlebar
         local buttons = awful.util.table.join(
